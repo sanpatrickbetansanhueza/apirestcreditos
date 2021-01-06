@@ -1,0 +1,459 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Api Rest Créditos",
+        "description": "Se requiere tener un “sistema de créditos” para usuarios de eCommerce, donde se disponga en una ​ API REST​ , servicios para: agregar​ , ​ descontar​ y ​ consultar​ “créditos” por usuario​ y por cada tienda​ ."
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/clientes": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Lista todos los clientes",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Crea un nuevo cliente en el sistema",
+                "requestBody": {
+                    "description": "Cliente Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/ClientePost"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Modifica un cliente a través de su correo electrónico como parametro header",
+                "tags": [
+                    "Clientes"
+                ],
+                "requestBody": {
+                    "description": "Cliente Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/ClientePut"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "correo",
+                        "required": true,
+                        "description": "Correo como id para modificar",
+                        "schema": {
+                            "$ref": "#/definitions/correo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Cat"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Cliente not found."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Elimina un cliente a través de su correo",
+                "tags": [
+                    "Clientes"
+                ],
+                "requestBody": {
+                    "description": "Cliente Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/ClienteDelete"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Cliente not found."
+                    }
+                }
+            }
+        },
+        "/tiendas": {
+            "get": {
+                "tags": [
+                    "Tiendas"
+                ],
+                "summary": "Lista todas las tiendas",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tiendas"
+                ],
+                "summary": "Crea una nueva tienda en el sistema",
+                "requestBody": {
+                    "description": "Tienda Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/TiendaPost"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Modifica una tienda a través de su tiendaid",
+                "tags": [
+                    "Tiendas"
+                ],
+                "requestBody": {
+                    "description": "Tienda Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/TiendaPut"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "tiendaid",
+                        "required": true,
+                        "description": "Tiendaid como id para modificar",
+                        "schema": {
+                            "$ref": "#/definitions/tiendaid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Tienda not found."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Elimina una tienda a través de su tiendaid como parametro header",
+                "tags": [
+                    "Tiendas"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "tiendaid",
+                        "required": true,
+                        "description": "Tienda para eliminar una tienda",
+                        "schema": {
+                            "$ref": "#/definitions/tiendaid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Cliente not found."
+                    }
+                }
+            }
+        },
+        "/creditos": {
+            "post": {
+                "tags": [
+                    "Creditos"
+                ],
+                "requestBody": {
+                    "description": "Tienda Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/CreditoPost"
+                            }
+                        }
+                    }
+                },
+                "summary": "Agrega (adhiere) créditos para un usuario en una tienda indicada",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Creditos"
+                ],
+                "requestBody": {
+                    "description": "Tienda Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/CreditoPut"
+                            }
+                        }
+                    }
+                },
+                "summary": "Descuenta créditos para un usuario en una tienda indicada",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Creditos"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "tiendaid",
+                        "required": true,
+                        "description": "Tiendaid para consultar monto crédito",
+                        "schema": {
+                            "$ref": "#/definitions/tiendaidConsulatMonto"
+                        }
+                    },
+                    {
+                        "in": "header",
+                        "name": "correo",
+                        "required": true,
+                        "description": "Correo para consultar monto crédito",
+                        "schema": {
+                            "$ref": "#/definitions/correo"
+                        }
+                    }
+                ],
+                "summary": "Consulta monto crédito para un usuario en una tienda indicada",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "id": {
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "correo": {
+            "properties": {
+                "correo": {
+                    "type": "string"
+                }
+            },
+            "example": "ejemplo@ejemplo.com"
+            
+        },
+        "ClientePost": {
+            "type": "object",
+            "properties": {
+                "rut": {
+                    "type":"string"
+                },
+                "nombre": {
+                    "type": "boolean"
+                },
+                "correo": {
+                    "type": "string"
+                }
+            },
+            "example":{
+                "rut":"17667635-3",
+                "nombre":"Ejemplo",
+                "correo":"ejemplo@ejemplo.com"
+            }
+        },
+        "ClientePut": {
+            "type": "object",
+            "properties": {
+                "rut": {
+                    "type":"string"
+                },
+                "nombre": {
+                    "type": "boolean"
+                },
+                "correo": {
+                    "type": "string"
+                }
+            },
+            "example":{
+                "rut":"modificar",
+                "correo":"modificar@modificar.com",
+                "nombre":"modificar"
+            }
+        },
+        "ClienteDelete": {
+            "type": "object",
+            "properties": {
+                "correo": {
+                    "type": "string"
+                }
+            },
+            "example":{
+                "correo":"modificar@modificar.com"
+            }
+        },
+        "TiendaPost":{
+            "type": "object",
+            "properties": {
+                "correo": {
+                    "type": "string"
+                }
+            },
+            "example":{
+                "nombre":"Tienda Ejemplo"
+            }
+        },
+        "TiendaPut": {
+            "type": "object",
+            "properties": {
+                "rut": {
+                    "type":"string"
+                }
+            },
+            "example":{
+                "nombre":"modificar tienda"
+            }
+        },
+        "tiendaid": {
+            "properties": {
+                "correo": {
+                    "type": "integer"
+                }
+            },
+            "example": 3
+        },
+        "CreditoPost":{
+            "properties": {
+                "correo": {
+                    "type": "string"
+                },
+                "monto": {
+                    "type": "integer"
+                },
+                "tiendaid": {
+                    "type": "integer"
+                }
+            },
+            "example": {
+                "correo":"ejemplo@ejemplo.com",
+                "monto":10,
+                "tiendaid":4
+            }
+        },
+        "CreditoPut":{
+            "properties": {
+                "correo": {
+                    "type": "string"
+                },
+                "monto": {
+                    "type": "integer"
+                },
+                "tiendaid": {
+                    "type": "integer"
+                }
+            },
+            "example": {
+                "correo":"ejemplo@ejemplo.com",
+                "monto":5,
+                "tiendaid":4
+            }
+        },
+        "tiendaidConsulatMonto": {
+            "properties": {
+                "correo": {
+                    "type": "integer"
+                }
+            },
+            "example": 4
+        }
+    }
+}
